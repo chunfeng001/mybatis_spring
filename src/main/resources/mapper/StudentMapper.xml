@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hniu.mapper.StudentMapper">
+    <resultMap id="studentMap" type="com.hniu.pojo.Student">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="age" column="age"></result>
+        <result property="stuPhone" column="stu_phone"></result>
+        <result property="address" column="address"></result>
+        <result property="money" column="money"></result>
+    </resultMap>
+      <select id="list" resultMap="studentMap" parameterType="map">
+          select *from `student`
+          <where>
+              <if test="name!=null and name!='' ">
+                  and name=#{name}
+              </if>
+              <if test="age!=null">
+                  and age=#{age}
+              </if>
+
+          </where>
+      </select>
+    <update id="update" parameterType="com.hniu.pojo.Student">
+        update `student` set `name`=#{name},age=#{age},stu_phone=#{stuPhone},address=#{address},money=#{money} where id=#{id}
+    </update>
+    <insert id="save" parameterType="com.hniu.pojo.Student">
+        insert into `student`(`id`,`name`,`age`,`stu_phone`,`address`,`money`) values (default ,#{name},#{age},#{stuPhone},#{address},#{money})
+    </insert>
+    <delete id="delete" parameterType="list">
+        delete from `student`
+        <where>
+            <foreach collection="array" item="id" separator="," open="id in(" close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+</mapper>
